@@ -88,10 +88,12 @@ class Domain:
             rep = rep.replace('\n','').replace('\\','')
             rep = rep[:-1]
             rep = json.loads(rep)
-            t = rep[2][1]
-            if t == None:
+
+            if self.total_num == 0:
                 break
-            p = re.match( r'[a-zA-Z0-9]{40}',t)
+            else:
+                t = rep[2][0]
+            p = re.match( r'[a-zA-Z0-9]{10}',t)
             if p:
                 break
             else:
