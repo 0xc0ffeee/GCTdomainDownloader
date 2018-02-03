@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-# GoogleSSLdomainFinder Terminal Version
-# -*- coding: utf-8 -*-
-__author__ = 'Wester'
+# GCTsubDomainDownloader
 
 import requests
 import re
@@ -14,7 +12,7 @@ import time,datetime
 from tqdm import tqdm
 
 proxies = None
-#proxies = {'http':'http://127.0.0.11080','https':'http://127.0.0.1:1080'}
+#proxies = {'http':'http://127.0.0.1080','https':'http://127.0.0.1:1080'}
 
 sess = requests.Session()
 
@@ -109,6 +107,7 @@ class Domain:
                print(("  "+c.red(str(self.total_num))+c.green(" subdomain certificate logs found")))
                print((c.red("[+]No subdomain certificate log found")))
                exit()
+
         for y in rep[0]:
             if y[1] not in self.domains:
                 self.domains[y[1]] = {}
@@ -176,8 +175,9 @@ if '__main__' == __name__:
     `\`\_____\``\/\_____\``\`\____-``\`\_\```
     ``\/_____/```\/_____/```\/____/```\/_/```
     `````````````````````````````````````````
-       Author:Wester@Sixtant Security Lab
+       Forked from: Wester@Sixtant Security Lab
     ''')
+
     c = Colored()
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--domain', dest='search_domain', action='store',required=True,help='The domain you want to search(input example: google.com/twitter.com),no need to add http/https')
