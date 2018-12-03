@@ -1,4 +1,4 @@
-# Subdomain Enumeration from Google's Certificate Transparency project
+# Subdomain Enumeration from Google's CT Project
 
 ![GitHub issues](https://img.shields.io/github/issues/Justsoos/GCTdomainDownloader.svg)
 [![Python 3.5](https://img.shields.io/badge/python-3.5-yellow.svg)](https://www.python.org)
