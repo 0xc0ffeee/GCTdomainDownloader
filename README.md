@@ -11,19 +11,7 @@ Python3.x compatible.
 
 ### Recommended Usage:
 
-check all registered Google.com's subdomain names:
-
 ```
-proxychains4 -q python3 GCTsubDomainDL.py -d google.com -e hide
-or
-proxychains4 -q python3 GCTsubDomainDL.py -d google.com -e show
-```
-
-or uncomment the proxies line in GCTsubDomainDL.py and replace with your own proxy settings:
-
-```
-proxies = {'http':'http://127.0.0.1080','https':'http://127.0.0.1:1080'}
-and then run:
 python3 GCTsubDomainDL.py -d google.com -e hide
 or
 python3 GCTsubDomainDL.py -d google.com -e show
