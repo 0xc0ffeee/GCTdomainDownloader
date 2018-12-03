@@ -17,5 +17,5 @@ or
 python3 GCTsubDomainDL.py -d google.com -e show
 ```
 
-###TODO
+### TODO
 Reduce false positives as you may obtain domains that are not in scope.
