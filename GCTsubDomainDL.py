@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # GCTsubDomainDownloader
+# Forked from: Justsoos and slightly edited to better fit my needs
 
 import requests
 import re
@@ -15,47 +16,6 @@ proxies = None
 #proxies = {'http':'http://127.0.0.1080','https':'http://127.0.0.1:1080'}
 
 sess = requests.Session()
-
-#text highlight
-class Colored(object):
-    RED = '\033[31m'
-    GREEN = '\033[32m'
-    YELLOW = '\033[33m'
-    BLUE = '\033[34m'
-    FUCHSIA = '\033[35m'
-    CYAN = '\033[36m'
-    WHITE = '\033[37m'
-
-    #: no color
-    RESET = '\033[0m'
-
-    def color_str(self, color, s):
-        return '{}{}{}'.format(
-            getattr(self, color),
-            s,
-            self.RESET
-        )
-
-    def red(self, s):
-        return self.color_str('RED', s)
-
-    def green(self, s):
-        return self.color_str('GREEN', s)
-
-    def yellow(self, s):
-        return self.color_str('YELLOW', s)
-
-    def blue(self, s):
-        return self.color_str('BLUE', s)
-
-    def fuchsia(self, s):
-        return self.color_str('FUCHSIA', s)
-
-    def cyan(self, s):
-        return self.color_str('CYAN', s)
-
-    def white(self, s):
-        return self.color_str('WHITE', s)
 
 #domainfinde function
 class Domain:
@@ -72,7 +32,6 @@ class Domain:
         self.nextUrl = 'https://transparencyreport.google.com/transparencyreport/api/v3/httpsreport/ct/certsearch/page?p='
 
     def get_domain(self):
-        c = Colored()
 
         do = 10
         while do > 0:
@@ -104,10 +63,8 @@ class Domain:
            for x in rep[1]:
                self.total_num += x[3]
            if self.total_num != 0:
-               print(("  "+c.red(str(self.total_num))+c.green(" subdomain certificate logs found")))
+               pass
            else:
-               print(("  "+c.red(str(self.total_num))+c.green(" subdomain certificate logs found")))
-               print((c.red("[+]No subdomain certificate log found")))
                exit()
 
         for y in rep[0]:
@@ -127,22 +84,13 @@ class Domain:
                     continue
 
         pageNum = (self.total_num//10) + 1
-        with tqdm(total=self.total_num,ncols=80) as pbar:
-            if self.flag < pageNum:
-               if self.total_num - (self.flag)*10 <10:
-                   pbar.update(self.total_num)
-               else:
-                   pbar.update((self.flag+1)*10)
-                   self.flag = self.flag+1
+
         if rep[2][1] != None:
             self.page_token = rep[2][1]
             self.get_domain()
 
     def run(self):
-        c = Colored()
-        print(("[+]Searching subdomains for "+c.cyan(self.search_domain)))
         self.get_domain()
-        print((c.fuchsia("[+]Printing subdomains for ")+c.cyan(self.search_domain)))
         for key,value in list(self.domains.items()):
             if value['is_expired'] == 1 and self.show_expired == 'show':
                 print((key+"   "+c.red("[Expired on "+datetime.datetime.fromtimestamp(value['expired_time']).strftime('%Y-%m-%d')+"]")))
@@ -151,7 +99,6 @@ class Domain:
         self.write_log()
 
     def write_log(self):
-        c = Colored()
         if(os.name == 'posix'):
             path = os.getcwd()+"/"+self.save_path+"/"
         else:
@@ -166,21 +113,10 @@ class Domain:
                  else:
                      f.write(key+"\r\n")
                      f.flush()
-        print((c.fuchsia("[+]The ")+c.cyan(self.search_domain)+c.fuchsia("'s subdomains have been saved in ")+c.cyan(path+self.search_domain+".txt")))
         f.close()
 
 if '__main__' == __name__:
-    print('''
-    `______`````______`````_____`````______``
-    /\``___\```/\``___\```/\``__-.``/\``___\`
-    \`\`\__`\``\`\___``\``\`\`\/\`\`\`\``__\`
-    `\`\_____\``\/\_____\``\`\____-``\`\_\```
-    ``\/_____/```\/_____/```\/____/```\/_/```
-    `````````````````````````````````````````
-       Forked from: Wester@Sixtant Security Lab
-    ''')
 
-    c = Colored()
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--domain', dest='search_domain', action='store',required=True,help='The domain you want to search(input example: google.com/twitter.com),no need to add http/https')
     parser.add_argument('-s', '--save', dest='save_path', action='store', default='log',required=False,help='The folder that subdomains will be saved under current path,(default:log),no need to /')
@@ -203,4 +139,4 @@ if '__main__' == __name__:
             print((c.red("[+]Error exit...")))
     else:
         print((c.red("[+]argument --domain/-d is illegal!")))
-        exit()
+        exit() 
